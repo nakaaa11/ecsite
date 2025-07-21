@@ -1,0 +1,22 @@
+{% extends 'shop/base.html' %}
+{% block title %}注文履歴{% endblock %}
+{% block content %}
+<h2 class="mb-4">注文履歴</h2>
+{% if orders|length > 0 %}
+  {% for order in orders %}
+    <div class="card mb-3">
+      <div class="card-header">
+        注文日時: {{ order.created_at|date:'Y/m/d H:i' }} / 合計金額: <strong>{{ order.total_price|floatformat:0|intcomma }}円</strong>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for item in order.orderitem_set.all %}
+          <li class="list-group-item">{{ item.product.name }} × {{ item.quantity }}個（{{ item.price|floatformat:0|intcomma }}円）</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+{% else %}
+  <div class="alert alert-info">注文履歴がありません。</div>
+{% endif %}
+<a href="/" class="btn btn-outline-primary w-100">商品一覧へ</a>
+{% endblock %} 
